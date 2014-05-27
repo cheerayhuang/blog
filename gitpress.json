@@ -1,8 +1,8 @@
 {
     "docs"      : { 
-    "关于我":"post/AboutMe/",
-    "服务器设计":"post/ServerDesign/",
-    "杂谈":"post/Misc/"
+    "关于我":"post/AboutMe",
+    "服务器设计":"post/ServerDesign",
+    "杂谈":"post/Misc"
     },
     "template"    : "default",
     "perpage"   : 10,
@@ -29,4 +29,5 @@
         }
     ] 
 }
+
 
