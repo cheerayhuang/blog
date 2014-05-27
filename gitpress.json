@@ -1,7 +1,6 @@
 {
     "docs"      : ["read_write_object_api.md"],
     "template"    : "default",
-    "domain_alias" :  ["your.domain"],    
     "perpage"   : 10,
     "order"  : "number",
     "types"     : {
