@@ -2,8 +2,8 @@
 
 读了老外写的一些文章，记录一下。
 原文在这里： 
-http://www.slideshare.net/billkarwin/extensible-data-modeling#
-http://backchannel.org/blog/friendfeed-schemaless-mysql
+[extensible-data-modeling][3]
+[friendfeed-schemaless-mysql][4]
 
 ##0 当要为关系数据库表增加属性时，会发生什么
 > 1.  Lock the table. 
@@ -259,5 +259,7 @@ CREATE TABLE index_user_id (
 当然，还需要一个后台运行的进程来修正错误的反向索引，以及清除失效的索引。这个后台运行的进程，应该总是有先清理那些近期更新的反向索引。
 
 
-  [1]: https://github.com/cheerayhuang/blog/blob/master/res/extensible_mysql_model_fg2.png 
-  [2]: https://github.com/cheerayhuang/blog/blob/master/res/extensible_mysql_model.png
+  [1]: https://github.com/cheerayhuang/blog/blob/master/res/extensible_mysql_model_fg2.png?raw=true 
+  [2]: https://github.com/cheerayhuang/blog/blob/master/res/extensible_mysql_model.png?raw=true
+  [3]: http://www.slideshare.net/billkarwin/extensible-data-modeling#
+  [4]: http://backchannel.org/blog/friendfeed-schemaless-mysql
