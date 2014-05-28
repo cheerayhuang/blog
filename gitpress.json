@@ -2,6 +2,7 @@
     "docs"      : { 
     "关于我":"post/AboutMe",
     "服务器设计":"post/ServerDesign",
+    "数据库设计":"post/DataBase",
     "杂谈":"post/Misc"
     },
     "template"    : "default",
