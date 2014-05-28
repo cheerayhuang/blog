@@ -1,4 +1,3 @@
-Tags: mysql 数据库
 #用可扩展的方式使用mysql
 
 读了老外写的一些文章，记录一下。
@@ -70,15 +69,7 @@ CREATE TABLE Attributes ( 
 
 这个表的第二列是属性名字，这样你可以自由的扩展属性了，并把属性对应的值填在第三列，像这样：
 
-> 
-+--------+-----------------+---------------------+
-| entity | attribute | value |
-+--------+-----------------+---------------------+
-| 207468 | title     | Goldfinger |
-| 207468 | production_year | 1964 |
-| 207468 | rating | 7.8 |
-| 207468 | length | 110 min |
-+--------+-----------------+---------------------+
+![额外的属性表][1]
 
 但是你为了得到一个完整的对象的查找结果，无疑会很麻烦。你必须得这样： 
 
@@ -142,7 +133,7 @@ CREATE TABLE TVShow (
 );
 
 ```
-![表继承][1]
+![表继承][2]
 
 这时候比如来了一个新的需求，videoGames， 你的表需要多加几个属性，你可以这样:
 
@@ -268,4 +259,5 @@ CREATE TABLE index_user_id (
 当然，还需要一个后台运行的进程来修正错误的反向索引，以及清除失效的索引。这个后台运行的进程，应该总是有先清理那些近期更新的反向索引。
 
 
-  [1]: ./res/extendible_mysql_model_fig1.png
+  [1]: https://github.com/cheerayhuang/blog/blob/master/res/extensible_mysql_model_fg2.png 
+  [2]: https://github.com/cheerayhuang/blog/blob/master/res/extensible_mysql_model.png
