@@ -2,8 +2,11 @@
 
 读了老外写的一些文章，记录一下。
 原文在这里： 
+
 [extensible-data-modeling][3]
+
 [friendfeed-schemaless-mysql][4]
+
 
 ##0 当要为关系数据库表增加属性时，会发生什么
 > 1.  Lock the table. 
