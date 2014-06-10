@@ -9,7 +9,7 @@
 
 
 ##0 当要为关系数据库表增加属性时，会发生什么
-> 1.  Lock the table. 
+ 1.  Lock the table. 
 2.  Make a new, empty the table like the original. 
 3.  Modify the columns of the new empty table. 
 4.  Copy all rows of data from original to new table… 
@@ -45,15 +45,15 @@ CREATE TABLE Title (
 上面SQL语句中的9-14列，都是**预留**的属性，当项目有额外的属性需求的时候，就直接利用这些列就好了。
 
 这个解决方案的优点是： 
-> No ALTER TABLE necessary to use a column for a new 
+ No ALTER TABLE necessary to use a column for a new 
 attribute—only a project decision is needed.
 
 缺点是： 
-> * If you run out of extra columns, then you’re back to 
+ * If you run out of extra columns, then you’re back to 
 ALTER TABLE. 
-> * Anyone can put any data in the columns—you can’t 
+ * Anyone can put any data in the columns—you can’t 
 assume consistent usage on every row. 
-> * Columns lack descriptive names or the right data type.
+ * Columns lack descriptive names or the right data type.
 
 
 ##2 创建横向的属性表
@@ -92,15 +92,15 @@ WHERE a.attribute = 'title'
 属性在这里已经成为一列值了，所以在查询的时候需要大量的where语句对结果进行约束。
 
 这个解决方案的好处是： 
-> * No ALTER TABLE needed again—ever! 
-> * Supports ultimate flexibility, potentially any “row” can 
+ * No ALTER TABLE needed again—ever! 
+ * Supports ultimate flexibility, potentially any “row” can 
 have its own distinct set of attributes. 
 
 坏处也是显而易见的：
-> * SQL operations become more complex. 
-> * Lots of application code required to reinvent features 
+ * SQL operations become more complex. 
+ * Lots of application code required to reinvent features 
 that an RDBMS already provides. 
-> * Doesn’t scale well—pivots required. 
+ * Doesn’t scale well—pivots required. 
 
 ##3 利用继承的方式扩展
 
@@ -152,20 +152,20 @@ CREATE TABLE VideoGames ( 
 把videoGames的属性建一张新表，不需要改原来的表，然后通过外键的方式与原来的表关联起来，实现继承。
 
 这个解决方案的好处：
-> * Best to support a finite set of subtypes, which are likely 
+ * Best to support a finite set of subtypes, which are likely 
 unchanging after creation. 
-> * Data types and constraints work normally. 
-> * Easy to create or drop subtype tables. 
-> * Easy to query attributes common to all subtypes. 
-> * Subtype tables are shorter, indexes are smaller.
+ * Data types and constraints work normally. 
+ * Easy to create or drop subtype tables. 
+ * Easy to query attributes common to all subtypes. 
+ * Subtype tables are shorter, indexes are smaller.
 
 坏处是： 
-> * Adding one entry takes two INSERT statements. 
-> * Querying attributes of subtypes requires a join. 
-> * Querying all types with subtype attributes requires 
+ * Adding one entry takes two INSERT statements. 
+ * Querying attributes of subtypes requires a join. 
+ * Querying all types with subtype attributes requires 
 multiple joins (as many as subtypes). 
-> * Adding a common attribute locks a large table. 
-> * Adding an attribute to a populated subtype locks a 
+ * Adding a common attribute locks a large table. 
+ * Adding an attribute to a populated subtype locks a 
 smaller table.
 
 ##4 利用序列化直接存储对象
@@ -227,12 +227,12 @@ VALUES ('Trials and Tribble-ations',  
 * No need to do ALTER TABLE to add custom fields
 
 缺点是： 
-> * Not indexable. 
-> * Must return the whole object, not an individual field. 
-> * Must write the whole object to update a single field. 
-> * Hard to use a custom field in a WHERE clause, GROUP BY 
+ * Not indexable. 
+ * Must return the whole object, not an individual field. 
+ * Must write the whole object to update a single field. 
+ * Hard to use a custom field in a WHERE clause, GROUP BY 
 or ORDER BY. 
-> * No support in the database for data types or 
+ * No support in the database for data types or 
 constraints, e.g. NOT NULL, UNIQUE, FOREIGN KEY
 
 ##5 在序列化存储的方式上，增加额外的反向索引
@@ -249,15 +249,15 @@ CREATE TABLE index_user_id (
 给body的json格式里的entity_id 这个key增加了一个index表，那么利用这个反向索引表，我们可以先找到id，然后再去主表中根据id查到我们想要的对象。如果有其他属性需要索引，我们可以建立额外的索引表，就像上面那样，让一个属性与id相关联就可以了。
 
 对于写入一个新的对象，我们把对象添加进主表之后，还要修改所有的索引表，总的来说写入的过程是这样的：
-> 1. Write the entity to the entities table, using the ACID properties of InnoDB
-> 2. Write the indexes to all of the index tables on all of the shards
+ 1. Write the entity to the entities table, using the ACID properties of InnoDB
+ 2. Write the indexes to all of the index tables on all of the shards
 
 这个过程，第一步可以利用Transaction（ACID)保持原子操作。 但是整个过程，第一步与第二步，并非原子操作。
 
 于是，我们查询一个对象的时候，需要加入一个过滤结果的过程，来应对反向索引不准确的情况（当写入操作的第二步没有被执行的时候，索引并没有正确更新）。读操作的过程如下：
-> 1. Read the entity_id from all of the index tables based on the query
-> 2. Read the entities from the entities table from the given entity IDs
-> 3. Filter (in Python) all of the entities that do not match the query conditions based on the actual property values
+ 1. Read the entity_id from all of the index tables based on the query
+ 2. Read the entities from the entities table from the given entity IDs
+ 3. Filter (in Python) all of the entities that do not match the query conditions based on the actual property values
 
 当然，还需要一个后台运行的进程来修正错误的反向索引，以及清除失效的索引。这个后台运行的进程，应该总是有先清理那些近期更新的反向索引。
 
