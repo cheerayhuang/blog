@@ -223,8 +223,8 @@ VALUES ('Trials and Tribble-ations',  
 显然这些数据库对于这种方式的支持都是有限的。可以利用自己维护一个索引，来解决。
 
 这个解决方案的优点是：
-> * Store any object and add new custom fields at any time. 
-> * No need to do ALTER TABLE to add custom fields
+* Store any object and add new custom fields at any time. 
+* No need to do ALTER TABLE to add custom fields
 
 缺点是： 
 > * Not indexable. 
